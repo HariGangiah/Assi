@@ -23,7 +23,7 @@ pipeline {
 
 		stage('Deploy') {
 			steps {
-			    sh 'sudo cp /home/ubuntu/jenkins/workspace/ques4-tomcat-declarative/target/works-with-heroku-1.0.war /opt/apache-tomcat-9.0.65/webapps'
+			    sh 'sudo cp /home/ubuntu/jenkins/workspace/krish/target/works-with-heroku-1.0.war /home/ubuntu/apache-tomcat-9.0.65/webapps'
 			    sh 'sudo stopTomcat'
 			    sh 'sudo startTomcat'
 				echo 'Successfully deployed'
