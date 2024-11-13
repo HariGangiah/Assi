@@ -1,0 +1,41 @@
+pipeline {
+	agent {label 'agentname'}
+
+		stages {
+		stage('Checkout') {
+			steps {
+				git branch: 'main', url: 'https://github.com/HariGangiah/Assi.git'
+			}
+		}
+
+		stage('Test') {
+			steps {
+				sh 'mvn clean test'
+				echo 'Running unit test and integration test'
+			}
+		}
+
+		stage('Build') {
+			steps {
+				sh 'mvn clean package'
+			}
+		}
+
+		stage('Deploy') {
+			steps {
+			    sh 'sudo cp /home/ubuntu/jenkins/workspace/ques4-tomcat-declarative/target/works-with-heroku-1.0.war /opt/apache-tomcat-9.0.65/webapps'
+			    sh 'sudo stopTomcat'
+			    sh 'sudo startTomcat'
+				echo 'Successfully deployed'
+			}
+		}
+		
+		stage('SonarQube Analysis Stage') {
+            steps{
+                withSonarQubeEnv('sonarqube') { 
+                    sh "mvn clean verify sonar:sonar -Dsonar.projectKey=jenkins"
+                }
+            }
+		}	
+	}
+}
